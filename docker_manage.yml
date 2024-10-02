@@ -1,0 +1,20 @@
+---
+- hosts: all
+  become: true
+  tasks:
+
+    - name: List running Docker containers
+      shell: docker ps -q
+      register: running_containers
+
+    - name: Stop running Docker containers
+      shell: docker stop {{ item }}
+      with_items: "{{ running_containers.stdout_lines }}"
+      when: running_containers.stdout != ''
+      ignore_errors: yes  # Avoid failure if no containers are running
+
+    - name: Remove stopped containers
+      shell: docker rm {{ item }}
+      with_items: "{{ running_containers.stdout_lines }}"
+      when: running_containers.stdout != ''
+      ignore_errors: yes  # Avoid failure if no containers are available for removal
