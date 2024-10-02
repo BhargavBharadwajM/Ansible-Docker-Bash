@@ -55,7 +55,7 @@ EXPOSE 8000
 # Run a Python HTTP server to serve the index.html on port 8000
 CMD ["python3", "-m", "http.server", "8000"]
 ```
-###Ansible Playbooks
+### Ansible Playbooks
 
 - **Docker Creation Playbook**
     This playbook creates a Docker container using the above Dockerfile and serves the index.html on port 8000 using a Python HTTP server.
@@ -66,4 +66,10 @@ CMD ["python3", "-m", "http.server", "8000"]
     CMD to use
     ansible-playbook ansible-playbooks/docker_manage.yml
 
+### Automation with Cron Jobs
+
+- This system is configured to run weekly through cron jobs. It includes:
+
+  - Weekly Docker container management (stopping and removing old containers).
+  - Monitoring AWS services and logging success codes.
 
