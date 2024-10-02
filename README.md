@@ -54,6 +54,16 @@ EXPOSE 8000
 
 # Run a Python HTTP server to serve the index.html on port 8000
 CMD ["python3", "-m", "http.server", "8000"]
+```
+###Ansible Playbooks
 
+- **Docker Creation Playbook**
+    This playbook creates a Docker container using the above Dockerfile and serves the index.html on port 8000 using a Python HTTP server.
+    CMD to use
+    ansible-playbook ansible-playbooks/docker_create.yml
+- **Docker Management Playbook**
+    This playbook lists, stops, and removes all running Docker containers.
+    CMD to use
+    ansible-playbook ansible-playbooks/docker_manage.yml
 
 
