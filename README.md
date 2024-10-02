@@ -79,17 +79,17 @@ CMD ["python3", "-m", "http.server", "8000"]
 - To set up the cron jobs, modify your crontab:
   - crontab -e
   - Add the following entries to automate weekly execution:
-    Create Docker container every day at 9:00 AM
-    0 9 * * * ansible-playbook /path_to_your_repo/ansible-playbooks/docker_create.yml
+    -  Create Docker container every day at 9:00 AM
+       0 9 * * * ansible-playbook /path_to_your_repo/ansible-playbooks/docker_create.yml
 
-    Log successful HTTP responses every day at 9:01 AM
-    1 9 * * * bash /path_to_your_repo/scripts/log_script.sh >> /home/phoenix/logs/log_output.log
+       Log successful HTTP responses every day at 9:01 AM
+       1 9 * * * bash /path_to_your_repo/scripts/log_script.sh >> /home/phoenix/logs/log_output.log
 
-    Manage Docker containers every day at 9:20 AM
-    20 9 * * * ansible-playbook /path_to_your_repo/ansible-playbooks/docker_manage.yml
+       Manage Docker containers every day at 9:20 AM
+       20 9 * * * ansible-playbook /path_to_your_repo/ansible-playbooks/docker_manage.yml
 
-    Monitor AWS services and log results weekly at 1:00 AM every Sunday
-    0 1 * * 0 bash /path_to_your_repo/scripts/aws_resource_list.sh <aws_region> <aws_service>
+       Monitor AWS services and log results weekly at 1:00 AM every Sunday
+       0 1 * * 0 bash /path_to_your_repo/scripts/aws_resource_list.sh <aws_region> <aws_service>
 
   - In this configuration:
 
