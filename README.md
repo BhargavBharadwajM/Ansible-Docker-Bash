@@ -76,9 +76,9 @@ CMD ["python3", "-m", "http.server", "8000"]
 - To set up the cron jobs, modify your crontab:
   - crontab -e
   - Add the following entries to automate weekly execution:
-    # Run Docker management every week
+    Run Docker management every week
     0 0 * * 0 ansible-playbook /path_to_your_repo/ansible-playbooks/docker_manage.yml
 
-    # Monitor AWS services and log success codes weekly
+    Monitor AWS services and log success codes weekly
     0 1 * * 0 bash /path_to_your_repo/scripts/aws_resource_list.sh <aws_region> <aws_service>
 
