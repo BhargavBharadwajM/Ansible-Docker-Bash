@@ -24,6 +24,7 @@ It includes two main components:
 - **scripts/**: Bash scripts for AWS CLI installation and AWS resource listing.
   - `aws_install.sh`: Installs and configures AWS CLI.
   - `aws_resource_list.sh`: Lists AWS resources for services like EC2, VPC, Lambda, etc.
+  - `log_script.sh`: Counts the number of successful HTTP responses (status code 200) from the Docker container logs.
 
 ---
 
@@ -54,6 +55,7 @@ EXPOSE 8000
 
 # Run a Python HTTP server to serve the index.html on port 8000
 CMD ["python3", "-m", "http.server", "8000"]
+
 ```
 ### Ansible Playbooks
 
@@ -70,15 +72,30 @@ CMD ["python3", "-m", "http.server", "8000"]
 
 - This system is configured to run weekly through cron jobs. It includes:
 
-  - Weekly Docker container management (stopping and removing old containers).
-  - Monitoring AWS services and logging success codes.
-  
+  - Docker Management: Stops and removes Docker containers every day.
+  - HTTP Response Logging: Counts successful HTTP responses from the Docker container every day.
+  - AWS Resource Monitoring: Lists AWS resources and logs success codes weekly.
+    
 - To set up the cron jobs, modify your crontab:
   - crontab -e
   - Add the following entries to automate weekly execution:
-    Run Docker management every week
-    0 0 * * 0 ansible-playbook /path_to_your_repo/ansible-playbooks/docker_manage.yml
+    Create Docker container every day at 9:00 AM
+    0 9 * * * ansible-playbook /path_to_your_repo/ansible-playbooks/docker_create.yml
 
-    Monitor AWS services and log success codes weekly
+    Log successful HTTP responses every day at 9:01 AM
+    1 9 * * * bash /path_to_your_repo/scripts/log_script.sh >> /home/phoenix/logs/log_output.log
+
+    Manage Docker containers every day at 9:20 AM
+    20 9 * * * ansible-playbook /path_to_your_repo/ansible-playbooks/docker_manage.yml
+
+    Monitor AWS services and log results weekly at 1:00 AM every Sunday
     0 1 * * 0 bash /path_to_your_repo/scripts/aws_resource_list.sh <aws_region> <aws_service>
+
+  - In this configuration:
+
+    9:00 AM: Docker container is created.
+    9:01 AM: Log script runs to count successful 200 HTTP responses, outputting to log_output.log.
+    9:20 AM: Docker management script runs to stop and remove containers.
+    1:00 AM on Sunday: AWS resource listing script runs.
+
 
