@@ -1,0 +1,39 @@
+---
+- hosts: all
+  become: true
+  tasks:
+
+    - name: Ensure Docker service is running
+      service:
+        name: docker
+        state: started
+
+    - name: Copy Dockerfile to remote VM
+      copy:
+        src: /home/phoenix/new/Dockerfile
+        dest: /home/ubuntu/Dockerfile
+        mode: '0644'
+
+    - name: Copy index.html to remote VM
+      copy:
+        src: /home/phoenix/new/index.html
+        dest: /home/ubuntu/index.html
+        mode: '0644'
+
+    - name: Build Docker image
+      docker_image:
+        name: my-hello-world
+        source: build
+        build:
+          path: /home/ubuntu  # Path where Dockerfile and index.html are located
+          dockerfile: Dockerfile
+        state: present
+
+    - name: Run Docker container
+      docker_container:
+        name: hello-world-container
+        image: my-hello-world
+        ports:
+          - 8000:8000
+        state: started
+
